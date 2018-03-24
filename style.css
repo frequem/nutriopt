@@ -1,0 +1,58 @@
+body{
+	text-align:center;
+}
+
+th{
+	font-weight: normal;
+}
+
+th, td{
+	text-align: center;
+}
+
+td[colspan]:not([colspan="1"]){
+	text-align: left;
+}
+
+.right{
+	text-align: right;
+	float: right;
+}
+
+input{
+	text-align: inherit;
+	width: 60px;
+}
+
+input[readonly]{
+	background-color: lightgrey;
+}
+
+fieldset{
+	display: inline-block;
+}
+
+form{
+	width: 100%;
+	overflow-y: auto;
+	_overflow: auto;
+	margin: 1em 0;
+}
+
+#mealTable, #deltaTable{
+	border-collapse: collapse;
+}
+
+tr.total{
+	border-top: 1px solid black;
+	font-weight: bold;
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Nutrition Optimizer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<script src="genetic-algorithm.js"></script>
+		<script src="app.js"></script>
+	</head>
+	<body>
+		<h1>Nutrition Optimizer</h1>
+		<form id="foodForm">
+			<fieldset>
+				<select name="foodSelect" id="foodSelect" onchange="onFoodSelect(this.selectedIndex);"></select>
+				<table>
+					<tr>
+						<th><label for="foodProtein">Protein</label></th>
+						<th><label for="foodCarbs">Carbs</label></th>
+						<th><label for="foodFat">Fat</label></th>
+						<th><label for="foodCalories">Calories</label></th>
+						<th><label for="foodWeight">Weight</label></th>
+					</tr>
+					<tr>
+						<td><input type="number" name="foodProtein" readonly id="foodProtein" /></td>
+						<td><input type="number" name="foodCarbs" readonly id="foodCarbs" /></td>
+						<td><input type="number" name="foodFat" readonly id="foodFat" /></td>
+						<td><input type="number" name="foodCalories" readonly id="foodCalories" /></td>
+						<td><input type="number" name="foodWeight" id="foodWeight" onchange="onFoodWeightChange(this.value);" /></td>
+					</tr>
+					<tr>
+						<td colspan="4">Measurements in g and/or per g</td>
+						<td class="right"><button id="foodAdd" onclick="onAddFood(); return false;">Add</button></td>
+					</tr>
+				</table>
+			</fieldset>
+		</form>
+		<form>
+			<fieldset>
+				<table id="mealTable">
+					<tr>
+						<th />
+						<th>Amount</th>
+						<th>Amount(min)</th>
+						<th>Amount(used)</th>
+						<th>Weight(g)</th>
+						<th>Protein</th>
+						<th>Carbs</th>
+						<th>Fat</th>
+						<th>Calories</th>
+						<th />
+					</tr>
+				</table>
+			</fieldset>
+		</form>
+		<form>
+			<fieldset>
+				<table id="deltaTable">
+					<tr>
+						<th />
+						<th><label for="goalProtein">Protein</label></th>
+						<th><label for="goalCarbs">Carbs</label></th>
+						<th><label for="goalFat">Fat</label></th>
+						<th><label for="goalCalories">Calories</label></th>
+					</tr>
+					<tr>
+						<td />
+						<td><input type="number" name="goalProtein" id="goalProtein" onchange="onGoalChange('protein', this.value);" /></td>
+						<td><input type="number" name="goalCarbs" id="goalCarbs" onchange="onGoalChange('carbs', this.value);" /></td>
+						<td><input type="number" name="goalFat" id="goalFat" onchange="onGoalChange('fat', this.value);" /></td>
+						<td><input type="number" name="goalCalories" id="goalCalories" onchange="onGoalChange('calories', this.value);" /></td>
+					</tr>
+				</table>
+			</fieldset>
+		</form>
+		<button onclick="onOptimize(); return false;">optimize</button>
+	</body>
+</html>
