@@ -8,21 +8,24 @@ var goals = {
 };
 
 function initFoods(){
-	foods.push(new Food("Oats", .17, .66, .07, 3.89));
 	foods.push(new Food("Chicken", .2177, 0, .0161, 1.129));
-	foods.push(new Food("Flax Seeds", .1429, 0.2857, 0.4286, 5.2857));
+	foods.push(new Food("Vegetables", 0.0280, 0.1469, 0, 0.7343));
 	foods.push(new Food("Egg w/ Yolk", 0.13, 0.01, 0.1, 1.43, 50));
 	foods.push(new Food("Eggwhites", 0.13, 0, 0, 0.5272));
-	foods.push(new Food("Nuts", 0.14, 0.11, 0.63, 6.66));
-	foods.push(new Food("Vegetables", 0.0280, 0.1469, 0, 0.7343));
-	foods.push(new Food("Whey", 0.7483, 0.1603, 0.01781, 4.5783));
-	foods.push(new Food("Wiener", 0.13, 0, 0.24, 2.69, 60));
-	foods.push(new Food("Fish Oil", 0, 0, 1, 9.02));
 	foods.push(new Food("Salmon frozen", 0.17, 0, 0.008, 0.7526));
+	foods.push(new Food("Oats", .17, .66, .07, 3.89));
+	foods.push(new Food("Flax Seeds", .1429, 0.2857, 0.4286, 5.2857));
+	foods.push(new Food("Nuts", 0.14, 0.11, 0.63, 6.66));
+	foods.push(new Food("Whey", 0.7483, 0.1603, 0.01781, 4.5783));
+	foods.push(new Food("Potatoes boiled", 0.02, 0.2, 0, 0.87));
+	foods.push(new Food("Rice(white)", 0.0132, 0.1410, 0.0176, 1.0573));
+	foods.push(new Food("Rice(brown)", 0.0265, 0.2566, 0.0088, 1.2389));
+	foods.push(new Food("Fish Oil", 0, 0, 1, 9.02));
 	foods.push(new Food("Salmon smoked", 0.21, 0, 0.11, 1.8));
 	foods.push(new Food("Cottage Cheese light", 0.12, 0.035, 0.005, 0.67));
 	foods.push(new Food("Bread (Rye)", 0.09, 0.48, 0.03, 2.59));
 	foods.push(new Food("Beans", 0.19, 0.39, 0.02, 2.35));
+	foods.push(new Food("Wiener", 0.13, 0, 0.24, 2.69, 60));
 }
 
 class Food{
