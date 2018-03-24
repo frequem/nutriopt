@@ -43,19 +43,16 @@ class Food{
 
 class MealItem{
 	constructor(item){
-		if(item instanceof MealItem){//copy object
-			this.food = item.food;
-			this.amount = item.amount;
-			this.amountMin = item.amountMin;
-		}else{
-			this.food = item;
-			this.amount = 0;
-			this.amountMin = 0;
-		}
+		let copy = item instanceof MealItem;
+		this.food = copy?item.food:item;
+		this.amount = copy?item.amount:0;
+		this.amountMin = copy?item.amountMin:0;
+		this.amountMax = copy?item.amountMax:-1;
 	}
 	
 	get amountUsed(){
-		return Math.max(this.amount, this.amountMin);
+		let max = Math.min(this.amount, this.amountMax);
+		return Math.max(max>=0?max:this.amount, this.amountMin);
 	}
 	
 	get amountGrams(){
@@ -148,6 +145,14 @@ function onMealItemAmountMin(miIndex, amountMin){
 	updateMealTable();
 }
 
+function onMealItemAmountMax(miIndex, amountMax){
+	if(!isNaN(amountMax)){
+		let mi = mealItems[miIndex];
+		mi.amountMax = amountMax;
+	}
+	updateMealTable();
+}
+
 function onMealItemAmount(miIndex, amount){
 	if(!isNaN(amount)){
 		let mi = mealItems[miIndex];
@@ -210,6 +215,7 @@ function addTableCellInput(tr, text, onchange, type="text"){
 	inp.type = type;
 	inp.value = text;
 	inp.onchange = onchange;
+	inp.onkeypress = function(event){ return event.keyCode!=13; };
 	td.appendChild(inp);
 	tr.appendChild(td);
 }
@@ -244,7 +250,8 @@ function addMealTableRow(i){
 	addTableCell(tr, mi.food.name);
 	addTableCellInput(tr, mi.amount, function(){onMealItemAmount(i, this.value);}, "number");
 	addTableCellInput(tr, mi.amountMin, function(){onMealItemAmountMin(i, this.value);}, "number");
-		
+	addTableCellInput(tr, mi.amountMax, function(){onMealItemAmountMax(i, this.value);}, "number");
+	
 	let items = [mi.amountUsed, mi.amountGrams, mi.protein, mi.carbs, mi.fat, mi.calories];
 	for(let x of items)
 		addTableCell(tr, Math.round(x * 100) / 100);

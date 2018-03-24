@@ -21,7 +21,7 @@ td[colspan]:not([colspan="1"]){
 
 input{
 	text-align: inherit;
-	width: 60px;
+	width: 50px;
 }
 
 input[readonly]{

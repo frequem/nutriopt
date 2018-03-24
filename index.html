@@ -26,7 +26,7 @@
 						<td><input type="number" name="foodCarbs" readonly id="foodCarbs" /></td>
 						<td><input type="number" name="foodFat" readonly id="foodFat" /></td>
 						<td><input type="number" name="foodCalories" readonly id="foodCalories" /></td>
-						<td><input type="number" name="foodWeight" id="foodWeight" onchange="onFoodWeightChange(this.value);" /></td>
+						<td><input type="number" name="foodWeight" id="foodWeight" onkeypress="return event.keyCode!=13;" onchange="onFoodWeightChange(this.value);" /></td>
 					</tr>
 					<tr>
 						<td colspan="4">Measurements in g and/or per g</td>
@@ -41,8 +41,9 @@
 					<tr>
 						<th />
 						<th>Amount</th>
-						<th>Amount(min)</th>
-						<th>Amount(used)</th>
+						<th>min</th>
+						<th>max</th>
+						<th>used</th>
 						<th>Weight(g)</th>
 						<th>Protein</th>
 						<th>Carbs</th>
