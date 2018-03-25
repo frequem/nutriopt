@@ -6,6 +6,14 @@ var goals = {
 	fat: 11,
 	calories: 409
 };
+var customFood = {
+	name: "",
+	protein: 0,
+	carbs: 0,
+	fat: 0,
+	calories: 0,
+	weight: 1
+}
 
 function initFoods(){
 	foods.push(new Food("Chicken", .2177, 0, .0161, 1.129));
@@ -29,7 +37,7 @@ function initFoods(){
 }
 
 class Food{
-	constructor(name, protein, carbs, fat, calories, weight=1){
+	constructor(name, protein, carbs, fat, calories, weight=1, isCustom=false){
 		this.name = name; 
 		//per gram of food
 		this.protein = protein;
@@ -38,16 +46,17 @@ class Food{
 		this.calories = calories;
 		//weight in g if food is not splittable, usually 1
 		this.weight = weight;
+		this.isCustom = isCustom; //is custom defined food
 	}
 }
 
 class MealItem{
-	constructor(item){
+	constructor(item, amount=0, amountMin=0, amountMax=-1){
 		let copy = item instanceof MealItem;
 		this.food = copy?item.food:item;
-		this.amount = copy?item.amount:0;
-		this.amountMin = copy?item.amountMin:0;
-		this.amountMax = copy?item.amountMax:-1;
+		this.amount = copy?item.amount:amount;
+		this.amountMin = copy?item.amountMin:amountMin;
+		this.amountMax = copy?item.amountMax:amountMax;
 	}
 	
 	get amountUsed(){
@@ -124,47 +133,77 @@ function onFoodSelect(index){
 }
 
 function onAddFood(){
-	addFood(getFoodSelectIndex());
+	let customCheckbox = document.getElementById("foodCustomCheckbox");
+	
+	let foodCustomName = document.getElementById("foodCustomName");
+	let foodProtein = document.getElementById("foodProtein");
+	let foodCarbs = document.getElementById("foodCarbs");
+	let foodFat = document.getElementById("foodFat");
+	let foodCalories = document.getElementById("foodCalories");
+	let foodWeight = document.getElementById("foodWeight");
+	
+	if(customCheckbox.checked){
+		mealItems.push(new MealItem(new Food(foodCustomName.value, foodProtein.value, 
+			foodCarbs.value, foodFat.value, foodCalories.value, foodWeight.value, true)));
+	}else{
+		addFood(getFoodSelectIndex());
+	}
 	updateMealTable();
-	storeFoodListCookie();
+	storeMealCookie();
 }
 
-function onFoodWeightChange(value){
-	if(!isNaN(value)){
+function onFoodDataChange(type, value){
+	if(type != "name" && (isNaN(value) || value < 0))
+		return;
+	let customCheckbox = document.getElementById("foodCustomCheckbox");
+	if(!customCheckbox.checked && type == "weight"){
 		let food = foods[getFoodSelectIndex()];
 		food.weight = value;
 	}
-	updateMealTable();
-}
-
-function onMealItemAmountMin(miIndex, amountMin){
-	if(!isNaN(amountMin)){
-		let mi = mealItems[miIndex];
-		mi.amountMin = amountMin;
+	
+	if(customCheckbox.checked){
+		switch(type){
+			case 'name':
+				customFood.name = value;
+				break;
+			case 'protein':
+				customFood.protein = value;
+				break;
+			case 'carbs':
+				customFood.carbs = value;
+				break;
+			case 'fat':
+				customFood.fat = value;
+				break;
+			case 'calories':
+				customFood.calories = value;
+				break;
+			case 'weight':
+				customFood.weight = value;
+				break;
+		}
 	}
 	updateMealTable();
 }
 
-function onMealItemAmountMax(miIndex, amountMax){
-	if(!isNaN(amountMax)){
-		let mi = mealItems[miIndex];
-		mi.amountMax = amountMax;
+function onMealItem(action, miIndex, value){
+	let mi = mealItems[miIndex];
+	switch(action){
+		case 'amount':
+			mi.amount = value;
+			break;
+		case 'min':
+			mi.amountMin = value;
+			break;
+		case 'max':
+			mi.amountMax = value;
+			break;
+		case 'remove':
+			mealItems.splice(miIndex, 1);
+			break;
 	}
+	storeMealCookie();
 	updateMealTable();
-}
-
-function onMealItemAmount(miIndex, amount){
-	if(!isNaN(amount)){
-		let mi = mealItems[miIndex];
-		mi.amount = amount;
-	}
-	updateMealTable();
-}
-
-function onMealItemRemove(miIndex){
-	mealItems.splice(miIndex, 1);
-	updateMealTable();
-	storeFoodListCookie();
 }
 
 function onGoalChange(type, value){
@@ -186,6 +225,38 @@ function onGoalChange(type, value){
 	}
 	storeGoalCookie();
 	updateDeltaTable();
+}
+
+function onCustomToggle(checked){
+	let foodSelect = document.getElementById("foodSelect");
+	let foodCustomName = document.getElementById("foodCustomName");
+	let foodCustomNameLabel = document.getElementById("foodCustomNameLabel");
+	
+	let foodProtein = document.getElementById("foodProtein");
+	let foodCarbs = document.getElementById("foodCarbs");
+	let foodFat = document.getElementById("foodFat");
+	let foodCalories = document.getElementById("foodCalories");
+	let foodWeight = document.getElementById("foodWeight");
+	
+	foodSelect.style.display = checked?"none":"inline-block";
+	foodCustomName.style.display = checked?"inline-block":"none";
+	foodCustomNameLabel.style.display = checked?"inline-block":"none";
+	
+	foodProtein.readOnly = !checked;
+	foodCarbs.readOnly = !checked;
+	foodFat.readOnly = !checked;
+	foodCalories.readOnly = !checked;
+	
+	if(checked){
+		foodCustomName.value = customFood.name;
+		foodProtein.value = customFood.protein;
+		foodCarbs.value = customFood.carbs;
+		foodFat.value = customFood.fat;
+		foodCalories.value = customFood.calories;
+		foodWeight.value = customFood.weight;
+	}else{
+		updateFoodInfo(getFoodSelectIndex());
+	}
 }
 
 function initFoodSelect(){
@@ -248,15 +319,15 @@ function addMealTableRow(i){
 	let tr = document.createElement("tr");
 	
 	addTableCell(tr, mi.food.name);
-	addTableCellInput(tr, mi.amount, function(){onMealItemAmount(i, this.value);}, "number");
-	addTableCellInput(tr, mi.amountMin, function(){onMealItemAmountMin(i, this.value);}, "number");
-	addTableCellInput(tr, mi.amountMax, function(){onMealItemAmountMax(i, this.value);}, "number");
+	addTableCellInput(tr, mi.amount, function(){onMealItem('amount', i, this.value);}, "number");
+	addTableCellInput(tr, mi.amountMin, function(){onMealItem('min', i, this.value);}, "number");
+	addTableCellInput(tr, mi.amountMax, function(){onMealItem('max', i, this.value);}, "number");
 	
 	let items = [mi.amountUsed, mi.amountGrams, mi.protein, mi.carbs, mi.fat, mi.calories];
 	for(let x of items)
 		addTableCell(tr, Math.round(x * 100) / 100);
 		
-	addTableCellButton(tr, "Remove", function(){onMealItemRemove(i);});
+	addTableCellButton(tr, "Remove", function(){onMealItem('remove', i);});
 		
 	mealTable.appendChild(tr);
 }
@@ -350,26 +421,45 @@ function readCookie(name){
 	return null;
 }
 
-function storeFoodListCookie(){
+function storeMealCookie(){
 	let foodList = [];
 	for(let i=0; i<mealItems.length; i++){
-		foodList.push(foods.findIndex(f => f === mealItems[i].food));
+		let mi = mealItems[i];
+		let data = {
+			'customFood': mi.food.isCustom,
+			'amount': mi.amount,
+			'amountMin': mi.amountMin,
+			'amountMax': mi.amountMax
+		};
+		
+		if(mi.food.isCustom){
+			data.food = mi.food;
+		}else{
+			data.food = foods.findIndex(f => f === mi.food);
+		}
+		
+		foodList.push(data);
 	}
 	
-	setCookie("foodList" ,JSON.stringify(foodList), 30);
+	setCookie("mealItems", JSON.stringify(foodList), 365);
 }
 
-function loadFoodListCookie(){
-	let items = JSON.parse(readCookie("foodList"));
+function loadMealCookie(){
+	let items = JSON.parse(readCookie("mealItems"));
 	if(items == null)
 		return;
 	for(let i of items){
-		addFood(i);
+		let food;
+		if(i.customFood)
+			food = i.food;
+		else
+			food = foods[i.food];
+		mealItems.push(new MealItem(food, i.amount, i.amountMin, i.amountMax));
 	}
 }
 
 function storeGoalCookie(){
-	setCookie("goals", JSON.stringify(goals), 30);
+	setCookie("goals", JSON.stringify(goals), 365);
 }
 
 function loadGoalCookie(){
@@ -450,12 +540,13 @@ function onOptimize(){
 	var gen = new GeneticAlgorithm(toolbox, popSize, mutProb, breedFunction, true);
 	mealItems = gen.evolve(gens).population[0].individual;
 	updateMealTable();
+	storeMealCookie();
 }
 
 
 window.onload = function(){
 	initFoods();
-	loadFoodListCookie();
+	loadMealCookie();
 	loadGoalCookie();
 	initFoodSelect();
 	updateFoodInfo(getFoodSelectIndex());

@@ -13,6 +13,9 @@
 		<form id="foodForm">
 			<fieldset>
 				<select name="foodSelect" id="foodSelect" onchange="onFoodSelect(this.selectedIndex);"></select>
+				<label for="foodCustomName" id="foodCustomNameLabel">Name</label>
+				<input type="text" name="foodCustomName" id="foodCustomName" onkeypress="return event.keyCode!=13;" onchange="onFoodDataChange('name', this.value);" />
+				<span class="right"><input type="checkbox" id="foodCustomCheckbox" onchange="onCustomToggle(this.checked);">Custom</input></span>
 				<table>
 					<tr>
 						<th><label for="foodProtein">Protein</label></th>
@@ -22,11 +25,11 @@
 						<th><label for="foodWeight">Weight</label></th>
 					</tr>
 					<tr>
-						<td><input type="number" name="foodProtein" readonly id="foodProtein" /></td>
-						<td><input type="number" name="foodCarbs" readonly id="foodCarbs" /></td>
-						<td><input type="number" name="foodFat" readonly id="foodFat" /></td>
-						<td><input type="number" name="foodCalories" readonly id="foodCalories" /></td>
-						<td><input type="number" name="foodWeight" id="foodWeight" onkeypress="return event.keyCode!=13;" onchange="onFoodWeightChange(this.value);" /></td>
+						<td><input type="number" step="0.0001" name="foodProtein" readonly id="foodProtein" onkeypress="return event.keyCode!=13;" onchange="onFoodDataChange('protein', this.value);" /></td>
+						<td><input type="number" step="0.0001" name="foodCarbs" readonly id="foodCarbs" onkeypress="return event.keyCode!=13;" onchange="onFoodDataChange('carbs', this.value);" /></td>
+						<td><input type="number" step="0.0001" name="foodFat" readonly id="foodFat" onkeypress="return event.keyCode!=13;" onchange="onFoodDataChange('fat', this.value);" /></td>
+						<td><input type="number" step="0.0001" name="foodCalories" readonly id="foodCalories" onkeypress="return event.keyCode!=13;" onchange="onFoodDataChange('calories', this.value);" /></td>
+						<td><input type="number" name="foodWeight" id="foodWeight" onkeypress="return event.keyCode!=13;" onchange="onFoodDataChange('weight', this.value);" /></td>
 					</tr>
 					<tr>
 						<td colspan="4">Measurements in g and/or per g</td>
