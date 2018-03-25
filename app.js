@@ -37,16 +37,16 @@ function initFoods(){
 }
 
 class Food{
-	constructor(name, protein, carbs, fat, calories, weight=1, isCustom=false){
-		this.name = name; 
+	constructor(food, protein, carbs, fat, calories, weight=1){
+		let copy = food instanceof Food;
+		this.name = copy?food.name:food; 
 		//per gram of food
-		this.protein = protein;
-		this.carbs = carbs;
-		this.fat = fat;
-		this.calories = calories;
+		this.protein = copy?food.protein:protein;
+		this.carbs = copy?food.carbs:carbs;
+		this.fat = copy?food.fat:fat;
+		this.calories = copy?food.calories:calories;
 		//weight in g if food is not splittable, usually 1
-		this.weight = weight;
-		this.isCustom = isCustom; //is custom defined food
+		this.weight = copy?food.weight:weight;
 	}
 }
 
@@ -85,17 +85,6 @@ class MealItem{
 	}
 }
 
-function addFood(foodIndex){
-	let food = foods[foodIndex];
-	
-	for(let i=0; i<mealItems.length; i++){
-		if(mealItems[i].food === food)
-			return;
-	}
-		
-	mealItems.push(new MealItem(food));
-}
-
 function getMealTotal(meal){
 	let totalWeight = 0;
 	let totalProtein = 0;
@@ -129,7 +118,7 @@ function getGoalDelta(goals, total){
 }
 
 function onFoodSelect(index){
-	updateFoodInfo(index);
+	updateFoodInfo(false, index);
 }
 
 function onAddFood(){
@@ -142,12 +131,11 @@ function onAddFood(){
 	let foodCalories = document.getElementById("foodCalories");
 	let foodWeight = document.getElementById("foodWeight");
 	
-	if(customCheckbox.checked){
-		mealItems.push(new MealItem(new Food(foodCustomName.value, foodProtein.value, 
-			foodCarbs.value, foodFat.value, foodCalories.value, foodWeight.value, true)));
-	}else{
-		addFood(getFoodSelectIndex());
-	}
+	let food = customCheckbox.checked?new Food(foodCustomName.value, foodProtein.value, 
+			foodCarbs.value, foodFat.value, foodCalories.value, foodWeight.value):new Food(foods[getFoodSelectIndex()]);
+	
+	mealItems.push(new MealItem(food));
+	
 	updateMealTable();
 	storeMealCookie();
 }
@@ -247,16 +235,7 @@ function onCustomToggle(checked){
 	foodFat.readOnly = !checked;
 	foodCalories.readOnly = !checked;
 	
-	if(checked){
-		foodCustomName.value = customFood.name;
-		foodProtein.value = customFood.protein;
-		foodCarbs.value = customFood.carbs;
-		foodFat.value = customFood.fat;
-		foodCalories.value = customFood.calories;
-		foodWeight.value = customFood.weight;
-	}else{
-		updateFoodInfo(getFoodSelectIndex());
-	}
+	updateFoodInfo(checked, foodSelect.selectedIndex);
 }
 
 function initFoodSelect(){
@@ -300,17 +279,23 @@ function addTableCellButton(tr, text, onclick){
 	tr.appendChild(td);
 }
 
-function updateFoodInfo(foodIndex){
+function updateFoodInfo(isCustom, foodIndex){
+	let customName = document.getElementById("foodCustomName");
 	let protein = document.getElementById("foodProtein");
 	let carbs = document.getElementById("foodCarbs");
 	let fat = document.getElementById("foodFat");
 	let calories = document.getElementById("foodCalories");
 	let weight = document.getElementById("foodWeight");
-	protein.value = foods[foodIndex].protein;
-	carbs.value = foods[foodIndex].carbs;
-	fat.value = foods[foodIndex].fat;
-	calories.value = foods[foodIndex].calories;
-	weight.value = foods[foodIndex].weight;
+	
+	if(isCustom){
+		foodCustomName.value = customFood.name;
+	}
+	
+	protein.value = isCustom?customFood.protein:foods[foodIndex].protein;
+	carbs.value = isCustom?customFood.carbs:foods[foodIndex].carbs;
+	fat.value = isCustom?customFood.fat:foods[foodIndex].fat;
+	calories.value = isCustom?customFood.calories:foods[foodIndex].calories;
+	weight.value = isCustom?customFood.weight:foods[foodIndex].weight;
 }
 
 function addMealTableRow(i){
@@ -426,17 +411,11 @@ function storeMealCookie(){
 	for(let i=0; i<mealItems.length; i++){
 		let mi = mealItems[i];
 		let data = {
-			'customFood': mi.food.isCustom,
+			'food': mi.food,
 			'amount': mi.amount,
 			'amountMin': mi.amountMin,
 			'amountMax': mi.amountMax
 		};
-		
-		if(mi.food.isCustom){
-			data.food = mi.food;
-		}else{
-			data.food = foods.findIndex(f => f === mi.food);
-		}
 		
 		foodList.push(data);
 	}
@@ -449,12 +428,7 @@ function loadMealCookie(){
 	if(items == null)
 		return;
 	for(let i of items){
-		let food;
-		if(i.customFood)
-			food = i.food;
-		else
-			food = foods[i.food];
-		mealItems.push(new MealItem(food, i.amount, i.amountMin, i.amountMax));
+		mealItems.push(new MealItem(i.food, i.amount, i.amountMin, i.amountMax));
 	}
 }
 
@@ -549,7 +523,7 @@ window.onload = function(){
 	loadMealCookie();
 	loadGoalCookie();
 	initFoodSelect();
-	updateFoodInfo(getFoodSelectIndex());
+	updateFoodInfo(false, getFoodSelectIndex());
 	updateMealTable();
 	updateDeltaTable();
 };
