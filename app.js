@@ -523,7 +523,7 @@ window.onload = function(){
 	loadMealCookie();
 	loadGoalCookie();
 	initFoodSelect();
-	updateFoodInfo(false, getFoodSelectIndex());
+	onCustomToggle(document.getElementById("foodCustomCheckbox").checked);
 	updateMealTable();
 	updateDeltaTable();
 };
