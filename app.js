@@ -322,7 +322,7 @@ function addMealTableTotalRow(){
 	let tr = document.createElement("tr");
 	tr.classList.add("total");
 	
-	for(let i=0; i<4; i++)
+	for(let i=0; i<5; i++)
 		addTableCell(tr, "");
 		
 	let items = [total.weight, total.protein, total.carbs, total.fat, total.calories];
@@ -451,10 +451,16 @@ function copyMeal(meal){
 	return array;
 }
 
+function getRandomAmount(weight=1){
+	let mult = parseInt(goals.protein) + parseInt(goals.carbs) + 
+					parseInt(goals.fat) + parseInt(goals.calories);
+	return Math.floor((Math.random() * mult) / weight);
+}
+
 function genIndividual(){
 	let array = copyMeal(mealItems);
 	for(let i=0; i<array.length; i++){
-		array[i].amount = Math.floor((Math.random() * 500) / array[i].food.weight);
+		array[i].amount = getRandomAmount(array[i].food.weight);
 	}
 	return array;
 }
@@ -483,7 +489,7 @@ function getFitness(indv){
 
 function mutate(indv){
 	let mutatedIndex = Math.floor(Math.random() * indv.length);
-	indv[mutatedIndex].amount = Math.floor((Math.random() * 500) / indv[mutatedIndex].food.weight);
+	indv[mutatedIndex].amount = getRandomAmount(indv[mutatedIndex].food.weight);
 	return indv;
 }
 
