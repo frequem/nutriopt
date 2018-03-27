@@ -22,7 +22,8 @@ function initFoods(){
 	foods.push(new Food("Oats", .17, .66, .07));
 	foods.push(new Food("Flax Seeds", .1429, 0.2857, 0.4286));
 	foods.push(new Food("Nuts", 0.14, 0.11, 0.63));
-	foods.push(new Food("Whey", 0.7483, 0.1603, 0.01781));
+	foods.push(new Food("Whey Protein Concentrate", 0.82, 0.04, 0.075));
+	foods.push(new Food("Whey Protein Isolate", 0.9, 0.025, 0.003));
 	foods.push(new Food("Potatoes boiled", 0.02, 0.2, 0));
 	foods.push(new Food("Rice(white)", 0.0132, 0.1410, 0.0176));
 	foods.push(new Food("Rice(brown)", 0.0265, 0.2566, 0.0088));
