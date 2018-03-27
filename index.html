@@ -69,10 +69,10 @@
 					</tr>
 					<tr>
 						<td />
-						<td><input type="number" name="goalProtein" id="goalProtein" onchange="onGoalChange('protein', this.value);" /></td>
-						<td><input type="number" name="goalCarbs" id="goalCarbs" onchange="onGoalChange('carbs', this.value);" /></td>
-						<td><input type="number" name="goalFat" id="goalFat" onchange="onGoalChange('fat', this.value);" /></td>
-						<td><input type="number" name="goalCalories" id="goalCalories" onchange="onGoalChange('calories', this.value);" /></td>
+						<td><input type="number" step="0.1" name="goalProtein" id="goalProtein" onchange="onGoalChange('protein', this.value);" /></td>
+						<td><input type="number" step="0.1" name="goalCarbs" id="goalCarbs" onchange="onGoalChange('carbs', this.value);" /></td>
+						<td><input type="number" step="0.1" name="goalFat" id="goalFat" onchange="onGoalChange('fat', this.value);" /></td>
+						<td><input type="number" step="0.1" name="goalCalories" readonly id="goalCalories" /></td>
 					</tr>
 				</table>
 			</fieldset>
