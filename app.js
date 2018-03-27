@@ -135,7 +135,7 @@ function onAddFood(){
 	let foodWeight = document.getElementById("foodWeight");
 	
 	let food = customCheckbox.checked?new Food(foodCustomName.value, foodProtein.value, 
-			foodCarbs.value, foodFat.value, foodCalories.value, foodWeight.value):new Food(foods[getFoodSelectIndex()]);
+			foodCarbs.value, foodFat.value, foodWeight.value):new Food(foods[getFoodSelectIndex()]);
 	
 	mealItems.push(new MealItem(food));
 	
