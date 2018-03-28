@@ -18,8 +18,8 @@ function initFoods(){
 	foods.push(new Food("Vegetables", 0.0280, 0.1469, 0));
 	foods.push(new Food("Egg w/ Yolk", 0.13, 0.01, 0.1, 50));
 	foods.push(new Food("Eggwhites", 0.13, 0, 0));
-	foods.push(new Food("Salmon frozen", 0.17, 0, 0.008));
-	foods.push(new Food("Oats", .17, .66, .07));
+	foods.push(new Food("Salmon (frozen)", 0.17, 0, 0.008));
+	foods.push(new Food("Oats (rolled)", .13, .59, .07));
 	foods.push(new Food("Flax Seeds", .1429, 0.2857, 0.4286));
 	foods.push(new Food("Nuts", 0.14, 0.11, 0.63));
 	foods.push(new Food("Whey Protein Concentrate", 0.82, 0.04, 0.075));
@@ -28,7 +28,7 @@ function initFoods(){
 	foods.push(new Food("Rice(white)", 0.0132, 0.1410, 0.0176));
 	foods.push(new Food("Rice(brown)", 0.0265, 0.2566, 0.0088));
 	foods.push(new Food("Fish Oil", 0, 0, 1));
-	foods.push(new Food("Salmon smoked", 0.21, 0, 0.11));
+	foods.push(new Food("Salmon (smoked)", 0.21, 0, 0.11));
 	foods.push(new Food("Cottage Cheese light", 0.12, 0.035, 0.005));
 	foods.push(new Food("Bread (Rye)", 0.09, 0.48, 0.03));
 	foods.push(new Food("Beans", 0.19, 0.39, 0.02));
