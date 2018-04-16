@@ -27,12 +27,17 @@ function initFoods(){
 	foods.push(new Food("Potatoes boiled", 0.02, 0.2, 0));
 	foods.push(new Food("Rice(white)", 0.0132, 0.1410, 0.0176));
 	foods.push(new Food("Rice(brown)", 0.0265, 0.2566, 0.0088));
-	foods.push(new Food("Fish Oil", 0, 0, 1));
+	foods.push(new Food("Oil", 0, 0, 1));
 	foods.push(new Food("Salmon (smoked)", 0.21, 0, 0.11));
 	foods.push(new Food("Cottage Cheese light", 0.12, 0.035, 0.005));
 	foods.push(new Food("Bread (Rye)", 0.09, 0.48, 0.03));
-	foods.push(new Food("Beans", 0.19, 0.39, 0.02));
+	foods.push(new Food("Kidney Beans (red)", 0.073, 0.173, 0.001));
+	foods.push(new Food("Beans (white)", 0.064, 0.15, 0.006));
 	foods.push(new Food("Wiener", 0.13, 0, 0.24, 60));
+	foods.push(new Food("Onion", 0.011, 0.094, 0.001));
+	foods.push(new Food("Ground Meat (50/50 Pork/Beef, 6% fat)", 0.2, 0, 0.06));
+	foods.push(new Food("Tomato puree", 0.014, 0.036, 0.002));
+
 }
 
 class Food{
@@ -521,8 +526,9 @@ function onOptimize(){
 	storeMealCookie();
 }
 
+window.onload = init;
 
-window.onload = function(){
+function init(){
 	initFoods();
 	loadMealCookie();
 	loadGoalCookie();
