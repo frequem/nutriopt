@@ -47,8 +47,11 @@ form{
 	border-collapse: collapse;
 }
 
-tr.total{
+tr.totalSum{
 	border-top: 1px solid black;
+}
+
+tr.total{
 	font-weight: bold;
 }
 

@@ -19,7 +19,7 @@ function initFoods(){
 	foods.push(new Food("Egg w/ Yolk", 0.13, 0.01, 0.1, 50));
 	foods.push(new Food("Eggwhites", 0.13, 0, 0));
 	foods.push(new Food("Salmon (frozen)", 0.17, 0, 0.008));
-	foods.push(new Food("Oats (rolled)", .13, .59, .07));
+	foods.push(new Food("Oats (fine)", .11, .56, .071));
 	foods.push(new Food("Flax Seeds", .1429, 0.2857, 0.4286));
 	foods.push(new Food("Nuts", 0.14, 0.11, 0.63));
 	foods.push(new Food("Whey Protein Concentrate", 0.82, 0.04, 0.075));
@@ -327,6 +327,7 @@ function addMealTableTotalRow(){
 	let total = getMealTotal(mealItems);
 	let tr = document.createElement("tr");
 	tr.classList.add("total");
+	tr.classList.add("totalSum");
 	
 	for(let i=0; i<5; i++)
 		addTableCell(tr, "");
@@ -334,6 +335,23 @@ function addMealTableTotalRow(){
 	let items = [total.weight, total.protein, total.carbs, total.fat, total.calories];
 	for(let i of items)
 		addTableCell(tr, Math.round(i * 100) / 100);
+		
+	mealTable.appendChild(tr);
+}
+
+function addMealTablePerGramTotalRow(){
+	let total = getMealTotal(mealItems);
+	let tr = document.createElement("tr");
+	tr.classList.add("total");
+	
+	for(let i=0; i<6; i++)
+		addTableCell(tr, "");
+		
+	let items = [total.protein, total.carbs, total.fat, total.calories];
+	for(let i of items){
+		let pg = total.weight>0?(i / total.weight):0;
+		addTableCell(tr, "(" + (Math.round(pg * 100) / 100) + ")");
+	}
 		
 	mealTable.appendChild(tr);
 }
@@ -348,6 +366,7 @@ function updateMealTable(){
 		addMealTableRow(i);
 	
 	addMealTableTotalRow();
+	addMealTablePerGramTotalRow();
 	
 	updateDeltaTable();
 }
