@@ -401,6 +401,7 @@ function updateDeltaTable(){
 	
 	tr = document.createElement("tr");
 	tr.classList.add("total");
+	tr.classList.add("totalSum");
 	
 	addTableCell(tr, "");
 	items = [delta.protein, delta.carbs, delta.fat, delta.calories];
